@@ -3,70 +3,69 @@ import React from 'react';
 
 const ArchitectureDoc: React.FC = () => {
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-slate-800 mb-6">System Architecture & AI Logic</h2>
+    <div className="p-8 max-w-4xl mx-auto pb-20">
+      <h2 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">Enterprise Java Architecture</h2>
+      <p className="text-slate-500 mb-8">System design for UniSphere AI using Spring Boot and high-performance Java microservices.</p>
       
       <div className="space-y-8">
-        <section className="bg-white p-6 rounded-xl border border-slate-200">
-          <h3 className="text-xl font-bold text-blue-600 mb-3">1. University Recommendation Engine</h3>
-          <p className="text-slate-600 mb-4">
-            The platform uses a <strong>Multi-Factor Similarity Scoring (MFSS)</strong> algorithm. 
-            In a production environment, this would be implemented in <strong>Python</strong> using:
-          </p>
-          <ul className="list-disc pl-6 space-y-2 text-slate-600">
-            <li><strong>Pandas:</strong> For high-speed data frame manipulation.</li>
-            <li><strong>Scikit-Learn:</strong> For Cosine Similarity calculations between user vectors and university vectors.</li>
-            <li><strong>TF-IDF Vectorization:</strong> To analyze university focus tags vs. student career statements.</li>
-          </ul>
-        </section>
-
-        <section className="bg-white p-6 rounded-xl border border-slate-200">
-          <h3 className="text-xl font-bold text-indigo-600 mb-3">2. NLP & Sentiment Analysis</h3>
-          <p className="text-slate-600 mb-4">
-            We leverage <strong>Gemini 3 Flash</strong> to perform real-time NLP tasks:
-          </p>
-          <ul className="list-disc pl-6 space-y-2 text-slate-600">
-            <li><strong>Sentiment Classification:</strong> Analyzing peer reviews to classify them as Positive/Neutral/Negative.</li>
-            <li><strong>Zero-Shot Summarization:</strong> Distilling hundreds of reviews into a single "vibe" summary.</li>
-            <li><strong>Skill Gap Analysis:</strong> Comparing unstructured career goals with university curricula to find specific missing skills.</li>
-          </ul>
-        </section>
-
-        <section className="bg-white p-6 rounded-xl border border-slate-200">
-          <h3 className="text-xl font-bold text-emerald-600 mb-3">3. Database Schema (Production Ready)</h3>
-          <pre className="bg-slate-50 p-4 rounded text-xs font-mono text-slate-700 overflow-x-auto">
-{`Users {
-  id: uuid,
-  email: string,
-  role: Enum(Prospect, Student),
-  is_verified: boolean,
-  profile_data: JSONB // gpa, budget, skills
-}
-
-Universities {
-  id: uuid,
-  name: string,
-  metadata: JSONB // fees, placement_rate, ranking
-}
-
-Reviews {
-  id: uuid,
-  user_id: fk,
-  university_id: fk,
-  sentiment_score: float,
-  content: text,
-  credibility_score: float
-}`}
-          </pre>
-        </section>
-
-        <section className="bg-slate-900 p-8 rounded-xl text-white">
-          <h3 className="text-xl font-bold mb-4">Recruiter Focus: Resume Summary</h3>
-          <div className="border-l-4 border-blue-500 pl-4 space-y-4">
-            <p className="text-sm italic text-slate-300">
-              "Architected and developed a full-stack AI-driven EdTech platform connecting prospective study-abroad students with university matches using a <strong>custom recommendation scoring engine</strong>. Integrated <strong>LLM-based NLP pipelines</strong> for sentiment analysis of peer reviews and dynamic skill-gap alignment. Designed a <strong>modular React/TypeScript frontend</strong> with D3/Recharts data visualizations and real-time state management."
-            </p>
+        <section className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 font-bold text-lg">J</div>
+            <h3 className="text-xl font-bold text-slate-900">1. Spring Boot Backend Layer</h3>
           </div>
+          <p className="text-slate-600 mb-4 leading-relaxed">
+            The core engine is built on <strong>Spring Boot 3.x</strong>, providing a reactive and scalable environment for university data processing and AI orchestration.
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-slate-600 text-sm">
+            <li><strong>Spring Data JPA (Hibernate):</strong> Manages complex relational data for universities, user profiles, and peer reviews with optimized SQL indexing.</li>
+            <li><strong>Spring Security + JWT:</strong> Robust authentication handling the dual-profile (Prospective vs. Student) logic and batch-based expiration.</li>
+            <li><strong>Apache Maven:</strong> For dependency management of global educational datasets and Google GenAI Java SDK.</li>
+          </ul>
+        </section>
+
+        <section className="bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 font-bold text-lg">AI</div>
+            <h3 className="text-xl font-bold text-slate-900">2. Java AI Integration (LLM Proxy)</h3>
+          </div>
+          <p className="text-slate-600 mb-4 leading-relaxed">
+            Instead of client-side calls, the Java layer acts as an intelligent proxy to the <strong>Gemini 3 Pro API</strong>, enabling:
+          </p>
+          <ul className="list-disc pl-6 space-y-2 text-slate-600 text-sm">
+            <li><strong>Server-Side Caching:</strong> Reducing API latency by caching common university deep dives (Redis).</li>
+            <li><strong>Instruction Masking:</strong> Ensuring sensitive career goal data is scrubbed before processing by the LLM.</li>
+            <li><strong>Response Normalization:</strong> Using Jackson to map unstructured AI responses to rigid Java POJOs (EntranceExams, Scholarships).</li>
+          </ul>
+        </section>
+
+        <section className="bg-slate-900 p-10 rounded-3xl text-white shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-orange-500/10 rounded-full blur-3xl -z-0"></div>
+          <h3 className="text-xl font-bold mb-6 relative z-10">Production Java Stack Summary</h3>
+          <div className="grid grid-cols-2 gap-4 text-xs relative z-10">
+            <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+              <p className="text-orange-400 font-black uppercase mb-1">Language</p>
+              <p className="font-medium">Java 21 (LTS)</p>
+            </div>
+            <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+              <p className="text-orange-400 font-black uppercase mb-1">Framework</p>
+              <p className="font-medium">Spring Boot 3.2</p>
+            </div>
+            <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+              <p className="text-orange-400 font-black uppercase mb-1">Database</p>
+              <p className="font-medium">PostgreSQL + Vector Extension</p>
+            </div>
+            <div className="p-4 bg-white/5 rounded-2xl border border-white/10">
+              <p className="text-orange-400 font-black uppercase mb-1">Container</p>
+              <p className="font-medium">Docker / K8s</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-slate-50 p-8 rounded-3xl border border-slate-200 border-dashed">
+          <h4 className="font-bold text-slate-800 mb-4 uppercase tracking-widest text-xs">Technical Resume Insight</h4>
+          <p className="text-sm italic text-slate-500 leading-relaxed">
+            "Designed and implemented a scalable <strong>Java Spring Boot microservice architecture</strong> to power an AI-driven educational platform. Engineered a <strong>custom recommendation scoring service</strong> in Java using weighted similarity algorithms. Integrated <strong>Spring Security</strong> with custom filters to enforce batch-based authentication for verified university students, ensuring high credibility of peer networking features."
+          </p>
         </section>
       </div>
     </div>
