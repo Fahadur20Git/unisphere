@@ -17,10 +17,13 @@ export const getUniversityDeepDive = async (universityName: string) => {
         "entranceExams": [{"name": "Exam Name", "details": "Required score/info", "link": "Direct link if possible"}],
         "scholarships": [{"title": "Scholarship Name", "eligibility": "Who can apply", "link": "Application URL"}],
         "languageRequirements": ["Specific language exams needed like IELTS, TOEFL, JLPT with required scores"],
-        "professors": ["Highlights of 2-3 notable faculty members and their research areas"]
+        "professors": ["Highlights of 2-3 notable faculty members and their research areas"],
+        "coursePopularity": [
+          {"name": "Course Name", "percentage": number, "growth": "+5%"}
+        ]
       }
       
-      Ensure all information is up-to-date.`,
+      For 'coursePopularity', research which courses are most opted for at this specific university (e.g., for Tokyo University it might be Engineering/AI).`,
       config: {
         tools: [{ googleSearch: {} }],
         responseMimeType: "application/json",
@@ -53,7 +56,18 @@ export const getUniversityDeepDive = async (universityName: string) => {
               }
             },
             languageRequirements: { type: Type.ARRAY, items: { type: Type.STRING } },
-            professors: { type: Type.ARRAY, items: { type: Type.STRING } }
+            professors: { type: Type.ARRAY, items: { type: Type.STRING } },
+            coursePopularity: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  name: { type: Type.STRING },
+                  percentage: { type: Type.NUMBER },
+                  growth: { type: Type.STRING }
+                }
+              }
+            }
           }
         }
       },
@@ -67,6 +81,54 @@ export const getUniversityDeepDive = async (universityName: string) => {
   } catch (error) {
     console.error("Deep Dive Error:", error);
     return { data: null, sources: [] };
+  }
+};
+
+export const getGlobalTrends = async () => {
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-pro-preview',
+      contents: `Provide global study abroad statistics for the current year. 
+      Return a JSON with:
+      1. 'topCountries': [{ 'country': string, 'studentCount': number, 'popularCourse': string }]
+      2. 'trendingCourses': [{ 'name': string, 'interestScore': number }] (0-100)
+      3. 'summary': string (Overall market analysis)`,
+      config: {
+        tools: [{ googleSearch: {} }],
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            topCountries: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  country: { type: Type.STRING },
+                  studentCount: { type: Type.NUMBER },
+                  popularCourse: { type: Type.STRING }
+                }
+              }
+            },
+            trendingCourses: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  name: { type: Type.STRING },
+                  interestScore: { type: Type.NUMBER }
+                }
+              }
+            },
+            summary: { type: Type.STRING }
+          }
+        }
+      }
+    });
+    return JSON.parse(response.text);
+  } catch (error) {
+    console.error("Global Trends Error:", error);
+    return null;
   }
 };
 
@@ -90,7 +152,7 @@ export const analyzeSkillGap = async (userGoals: string, userSkills: string[], u
     return JSON.parse(response.text);
   } catch (error) {
     console.error("Gemini Analysis Error:", error);
-    return { alignmentScore: 75, gapSkills: ['Technical Leadership', 'Industry Ethics'], recommendation: "Reasonable alignment with current goals." };
+    return { alignmentScore: 75, gapSkills: ['Advanced Statistics', 'Cloud Computing'], recommendation: "This university aligns moderately with your goals." };
   }
 };
 
@@ -114,6 +176,6 @@ export const performSentimentAnalysis = async (reviews: string[]) => {
     });
     return JSON.parse(response.text);
   } catch (error) {
-    return { summary: "Feedback is generally positive focusing on campus infrastructure.", positiveCount: 1, neutralCount: 0, negativeCount: 0 };
+    return { summary: "Feedback is generally positive focusing on networking.", positiveCount: 1, neutralCount: 0, negativeCount: 0 };
   }
 };

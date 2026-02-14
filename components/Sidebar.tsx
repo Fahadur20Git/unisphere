@@ -9,7 +9,8 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ activeTab, setActiveTab }) => {
   const menuItems = [
     { id: 'dashboard', label: 'Recommendations', icon: '🎯' },
-    { id: 'networking', label: 'Peer Network', icon: '🤝' },
+    { id: 'networking', label: 'Student Connections', icon: '🤝' },
+    { id: 'analytics', label: 'Market Analytics', icon: '📊' },
     { id: 'exams', label: 'Exams & Scholarships', icon: '📝' },
     { id: 'profile', label: 'My Profile', icon: '👤' },
     { id: 'architecture', label: 'System Logic', icon: '🏗️' },

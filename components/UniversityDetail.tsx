@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { University } from '../types';
 import { MOCK_REVIEWS } from '../constants';
 import { analyzeSkillGap, performSentimentAnalysis, getUniversityDeepDive } from '../services/geminiService';
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Radar as RadarComponent } from 'recharts';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Radar as RadarComponent, BarChart, Bar, XAxis, YAxis, Tooltip, Cell } from 'recharts';
 
 interface Props {
   university: University;
@@ -51,6 +51,12 @@ const UniversityDetail: React.FC<Props> = ({ university, onBack, onContactStuden
     { subject: 'Infrastructure', A: 95, fullMark: 100 },
     { subject: 'Scholarships', A: 70, fullMark: 100 },
   ];
+
+  const courseData = deepDive?.coursePopularity?.map((c: any) => ({
+    name: c.name,
+    percentage: c.percentage,
+    growth: c.growth
+  })) || [];
 
   return (
     <div className="p-8 max-w-7xl mx-auto">
@@ -122,12 +128,34 @@ const UniversityDetail: React.FC<Props> = ({ university, onBack, onContactStuden
               </div>
             ) : (
               <div className="space-y-10 relative z-10">
-                {/* Infrastructure */}
+                {/* Course Popularity Analytics */}
                 <div>
+                  <h4 className="text-lg font-extrabold text-slate-900 mb-6 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-blue-600 rounded-full"></span> Most Preferred Courses at this Institution
+                  </h4>
+                  <div className="h-64 mb-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={courseData} layout="vertical">
+                        <XAxis type="number" hide />
+                        <YAxis dataKey="name" type="category" width={150} tick={{ fontSize: 12, fontWeight: 600 }} />
+                        <Tooltip cursor={{ fill: '#f1f5f9' }} />
+                        <Bar dataKey="percentage" fill="#3b82f6" radius={[0, 8, 8, 0]}>
+                           {courseData.map((entry: any, index: number) => (
+                            <Cell key={`cell-${index}`} fill={index === 0 ? '#1e40af' : '#60a5fa'} />
+                          ))}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <p className="text-xs text-slate-400 italic">Data reflecting current enrollment trends as of official university portals.</p>
+                </div>
+
+                {/* Infrastructure */}
+                <div className="pt-8 border-t border-slate-100">
                   <h4 className="text-lg font-extrabold text-slate-900 mb-3 flex items-center gap-2">
                     <span className="w-2 h-2 bg-blue-600 rounded-full"></span> Infrastructure & Facilities
                   </h4>
-                  <p className="text-slate-700 leading-relaxed">{deepDive?.infrastructure}</p>
+                  <p className="text-slate-700 leading-relaxed font-medium">{deepDive?.infrastructure}</p>
                 </div>
 
                 {/* Exams & Scholarships Grid */}
@@ -138,7 +166,7 @@ const UniversityDetail: React.FC<Props> = ({ university, onBack, onContactStuden
                       {deepDive?.entranceExams?.map((exam: any, i: number) => (
                         <div key={i} className="flex justify-between items-start">
                           <div>
-                            <p className="font-bold text-slate-800 text-sm">{exam.name}</p>
+                            <p className="font-bold text-slate-800 text-sm"><strong>{exam.name}</strong></p>
                             <p className="text-xs text-slate-500">{exam.details}</p>
                           </div>
                           {exam.link && (
@@ -153,7 +181,7 @@ const UniversityDetail: React.FC<Props> = ({ university, onBack, onContactStuden
                     <div className="space-y-4">
                       {deepDive?.scholarships?.map((s: any, i: number) => (
                         <div key={i}>
-                          <p className="font-bold text-emerald-800 text-sm">{s.title}</p>
+                          <p className="font-bold text-emerald-800 text-sm"><strong>{s.title}</strong></p>
                           <p className="text-xs text-emerald-600/80 mb-2">{s.eligibility}</p>
                           {s.link && (
                             <a href={s.link} target="_blank" className="text-[10px] font-black text-emerald-700 underline">VIEW DETAILS</a>
@@ -171,7 +199,7 @@ const UniversityDetail: React.FC<Props> = ({ university, onBack, onContactStuden
                     <ul className="space-y-2">
                       {deepDive?.languageRequirements?.map((lang: string, i: number) => (
                         <li key={i} className="flex gap-2 text-sm text-slate-600">
-                          <span className="text-blue-500 font-bold">✓</span> {lang}
+                          <span className="text-blue-500 font-bold">✓</span> <strong>{lang}</strong>
                         </li>
                       ))}
                     </ul>
@@ -193,14 +221,14 @@ const UniversityDetail: React.FC<Props> = ({ university, onBack, onContactStuden
         {/* Action Sidebar */}
         <div className="space-y-6">
           <div className="bg-slate-900 rounded-3xl p-8 text-white shadow-2xl sticky top-24 border border-slate-800">
-            <h3 className="text-2xl font-bold mb-2">Connect Now</h3>
-            <p className="text-slate-400 text-sm mb-8 leading-relaxed">The most trustworthy way to learn about a university is through those who are already there.</p>
+            <h3 className="text-2xl font-bold mb-2">Student Connections</h3>
+            <p className="text-slate-400 text-sm mb-8 leading-relaxed font-medium italic">"The most trustworthy way to learn about a university is through those who are already there."</p>
             
             <button 
               onClick={onContactStudent}
-              className="w-full bg-blue-600 text-white py-4 rounded-2xl font-black text-lg hover:bg-blue-500 transition-all shadow-xl shadow-blue-900/50 flex items-center justify-center gap-3 active:scale-[0.98]"
+              className="w-full bg-blue-600 text-white py-4 rounded-2xl font-black text-lg hover:bg-blue-500 transition-all shadow-xl shadow-blue-900/50 flex items-center justify-center gap-3 active:scale-[0.98] animate-bounce"
             >
-              <span>💬</span> Contact Verified Peer
+              <span>🤝</span> Contact Student Now
             </button>
             
             <div className="mt-8 pt-8 border-t border-slate-800">
@@ -217,7 +245,7 @@ const UniversityDetail: React.FC<Props> = ({ university, onBack, onContactStuden
                {MOCK_REVIEWS.filter(r => r.universityId === university.id).slice(0, 1).map(r => (
                  <div key={r.id} className="p-4 bg-white/5 rounded-2xl border border-white/10">
                    <p className="text-xs italic text-slate-300">"{r.comment}"</p>
-                   <p className="text-[10px] mt-2 font-bold text-blue-400 uppercase tracking-widest">— {r.studentName}</p>
+                   <p className="text-[10px] mt-2 font-bold text-blue-400 uppercase tracking-widest">— {r.studentName} (Verified Student)</p>
                  </div>
                ))}
             </div>

@@ -8,8 +8,8 @@ export interface University {
   id: string;
   name: string;
   country: string;
-  avgFees: number; // USD per year
-  avgPlacement: number; // Percentage
+  avgFees: number;
+  avgPlacement: number;
   worldRanking: number;
   tags: string[];
   description: string;
@@ -17,12 +17,23 @@ export interface University {
   image: string;
   galleryImages?: string[];
   officialWebsite?: string;
-  // Extended fields
   courses?: string[];
   entranceExams?: string[];
   scholarships?: string[];
   languagesNeeded?: string[];
   professorHighlights?: string[];
+}
+
+export interface CoursePopularity {
+  name: string;
+  percentage: number;
+  growth: string;
+}
+
+export interface GlobalTrend {
+  country: string;
+  studentCount: number;
+  popularCourse: string;
 }
 
 export interface StudentReview {
