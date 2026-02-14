@@ -1,0 +1,8 @@
+{
+  "name": "UniSphere AI",
+  "description": "An AI-powered global university recommendation and peer networking platform featuring similarity-based ranking, sentiment analysis of peer reviews, and real-time student networking.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
